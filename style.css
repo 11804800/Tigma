@@ -51,6 +51,8 @@ body {
   width: 320px;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .outline-btn {
@@ -85,8 +87,7 @@ body {
 }
 
 .slide-text {
-  border: 1px solid white;
-  padding: 5px;
+  padding: 10px;
   cursor: pointer;
   width: fit-content;
 }
