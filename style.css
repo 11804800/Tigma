@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   width: 100%;
@@ -5,12 +9,28 @@ body {
   overflow: hidden;
 }
 
-* {
-  box-sizing: border-box;
+#main {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  overflow: hidden;
 }
 
-#main {
-  width: 100dvw;
-  height: 100dvh;
-  overflow: hidden;
+.swiper {
+  width: 400px;
+  height: 85%;
+}
+
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background-color: #eee;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
