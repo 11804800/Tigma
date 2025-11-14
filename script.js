@@ -2,7 +2,16 @@ const data = [
   {
     id: 0,
     image: "./images/peach.jpg",
-    texts: [],
+    texts: [
+      {
+        id: 0,
+        text: "Cherry is Very Good for health.",
+        font: "24px",
+        color: "rgb(0,0,0)",
+        fontFamily: "Gill Sans",
+        fontWeight: 400,
+      },
+    ],
   },
   {
     id: 1,
@@ -32,51 +41,61 @@ const data = [
 ];
 
 let CurrentIndex = 0;
+let CurrentTextIndex = -1;
 
+const Add_New_Text_Btn = document.querySelector("#add-text-btn");
 const Swiper_Wrapper = document.querySelector(".swiper-wrapper");
 
-function AttachSlideEventListener() {
-  const Slide_Texts = document.querySelectorAll(".slide-text");
-  Slide_Texts.forEach((item) => {
+const Edit_Text_Btn = document.querySelector("#edit-text-btn");
+const Edit_Font_Size_Btn = document.querySelector("#edit-font-size-btn");
+const Edit_Font_Color_Btn = document.querySelector("#edit-font-color-btn");
+const Edit_Font_Family_Btn = document.querySelector("#edit-font-family-btn");
+const Edit_Font_Weight_Btn = document.querySelector("#edit-font-weight-btn");
+
+function AttachEventListeners() {
+  const SLIDE = document.querySelectorAll(".slide-text");
+  SLIDE.forEach((item, index) => {
+    let isDragging = false;
     let offsetX = 0;
     let offsetY = 0;
-    let isDragging = false;
-
-    item.addEventListener("click", (e) => {
-      isDragging = !isDragging;
-      if (isDragging) {
-        offsetX = e.clientX - item.offsetLeft;
-        offsetY = e.clientY - item.offsetTop;
-        item.style.cursor = "grabbing";
-        item.style.border = "2px solid white";
-      } else {
-        item.style.cursor = "pointer";
-        item.style.border = "none";
-      }
-    });
 
     item.addEventListener("mousedown", (e) => {
       isDragging = true;
       offsetX = e.clientX - item.offsetLeft;
       offsetY = e.clientY - item.offsetTop;
-      item.style.cursor = "grabbing";
+      document.addEventListener("mousemove", MouseMoveHandler);
+      document.addEventListener("mouseup", MouseUpHandler);
     });
 
-    document.addEventListener("mouseup", () => {
-      if (isDragging) {
-        isDragging = false;
-        item.style.cursor = "grab";
-      }
-    });
-
-    document.addEventListener("mousemove", (e) => {
+    function MouseMoveHandler(e) {
       if (isDragging) {
         item.style.position = "absolute";
-        item.style.left = `${e.clientX - offsetX}px`;
-        item.style.top = `${e.clientY - offsetY}px`;
+        item.style.left = e.clientX - offsetX + "px";
+        item.style.top = e.clientY - offsetY + "px";
       }
-    });
+    }
+
+    function MouseUpHandler() {
+      item.style.border = "none";
+      isDragging = false;
+      document.removeEventListener("mousemove", MouseMoveHandler);
+      document.removeEventListener("mouseup", MouseUpHandler);
+    }
   });
+}
+
+function SetCurrentTextIndex(index) {
+  CurrentTextIndex = index;
+  const SLIDE = document.querySelectorAll(".slide-text");
+  SLIDE.forEach((item) => {
+    item.style.border = "none";
+  });
+  SLIDE[index].style.border = "1px solid white";
+  const Style = window.getComputedStyle(SLIDE[index]);
+  Edit_Font_Color_Btn.value = `${Style.color}`;
+  Edit_Font_Family_Btn.value = Style.fontFamily;
+  Edit_Font_Size_Btn.value = `${Style.fontSize.replace("px", "")}`;
+  Edit_Font_Weight_Btn.value = `${Style.fontWeight}`;
 }
 
 function RenderDataItem() {
@@ -86,22 +105,30 @@ function RenderDataItem() {
        <img src="${item.image}" class="slide-image"/>
       <div class="slide-texts-container">
         ${item.texts
-          .map((elem) => `<div class="slide-text">${elem.text}</div>`)
+          .map(
+            (elem, index) =>
+              `<div  class="slide-text"       
+      style=" font:${elem.font}; color:${elem.color}; font-weight: ${elem.fontWeight};font-family:${elem.fontFamily};"
+       onclick="SetCurrentTextIndex(${index})">${elem.text}</div>`
+          )
           .join("")}
       </div>
     </div>`;
     Swiper_Wrapper.innerHTML += SlideElement;
   });
-  AttachSlideEventListener();
+  AttachEventListeners();
 }
 
 RenderDataItem();
 
-const Add_New_Text_Btn = document.querySelector("#add-text-btn");
 Add_New_Text_Btn.addEventListener("click", () => {
   data[CurrentIndex].texts.push({
     id: data[CurrentIndex].texts.length + 1,
     text: "Click to edit text",
+    font: "24px",
+    color: "rgb(0,0,0)",
+    fontFamily: "Gill Sans",
+    fontWeight: 400,
   });
   RenderDataItem();
 });
@@ -111,13 +138,81 @@ const swiper = new Swiper(".swiper", {
   pagination: {
     el: ".swiper-pagination",
   },
+  simulateTouch: false,
+  touchStartPreventDefault: false,
   navigation: {
     nextEl: ".swiper-button-next",
     prevEl: ".swiper-button-prev",
   },
   on: {
     slideChange: function () {
-      CurrentIndex = this.activeIndex;
+      CurrentIndex = this.realIndex;
     },
   },
 });
+
+function DeleteText() {
+  if (CurrentTextIndex >= 0) {
+    const filterText = data[CurrentIndex].texts.filter(
+      (_, index) => index != CurrentTextIndex
+    );
+    data[CurrentIndex].texts = filterText;
+    RenderDataItem();
+  }
+}
+
+function EditText() {
+  if (CurrentTextIndex >= 0) {
+    const slide_text = document.querySelectorAll(".slide-text");
+    slide_text[CurrentTextIndex].contentEditable = "true";
+    slide_text[CurrentTextIndex].focus();
+    document.addEventListener("mousedown", (e) => {
+      if (e.target != slide_text[CurrentTextIndex]) {
+        if (slide_text[CurrentTextIndex]) {
+          slide_text[CurrentTextIndex].contentEditable = "false";
+        }
+      }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key == "Enter") {
+        slide_text[CurrentTextIndex].contentEditable = "false";
+      }
+    });
+  }
+}
+
+function FontChange() {
+  if (CurrentTextIndex >= 0) {
+    const slide_text = document.querySelectorAll(".slide-text");
+    const value = document.querySelector("#edit-font-size-btn").value;
+    data[CurrentIndex].texts[CurrentTextIndex].font = value;
+    slide_text[CurrentTextIndex].style.fontSize = `${value}px`;
+  }
+}
+
+function ChangeFontWeight() {
+  if (CurrentTextIndex >= 0) {
+    const slide_text = document.querySelectorAll(".slide-text");
+    const value = Edit_Font_Weight_Btn.value;
+    data[CurrentIndex].texts[CurrentTextIndex].fontWeight = value;
+    slide_text[CurrentTextIndex].style.fontWeight = `${value}`;
+  }
+}
+
+function ChangeFontFamily() {
+  if (CurrentTextIndex >= 0) {
+    const slide_text = document.querySelectorAll(".slide-text");
+    const value = Edit_Font_Family_Btn.value;
+    data[CurrentIndex].texts[CurrentTextIndex].fontFamily = value;
+    slide_text[CurrentTextIndex].style.fontFamily = `${value}`;
+  }
+}
+
+function ChangeFontColor() {
+  if (CurrentTextIndex >= 0) {
+    const slide_text = document.querySelectorAll(".slide-text");
+    const value = Edit_Font_Color_Btn.value;
+    data[CurrentIndex].texts[CurrentTextIndex].color = value;
+    slide_text[CurrentTextIndex].style.color = `${value}`;
+  }
+}

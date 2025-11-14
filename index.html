@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="images/favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <title>Tigma</title>
 </head>
@@ -27,12 +28,143 @@
                 <button class="outline-btn" id="add-text-btn">
                     Add Text
                 </button>
-                <button class="outline-btn">Edit text</button>
-                <button class="outline-btn">Font Size</button>
-                <button class="outline-btn">Font Color</button>
-                <button class="outline-btn">Font Family</button>
-                <button class="outline-btn">Font Weight</button>
-                <button class="outline-btn">Text Alignment</button>
+                <button onclick="EditText()" class="outline-btn" id="edit-text-btn">Edit text</button>
+                <div class="select-btn-container">
+                    <div class="select-btn-div">
+                        <select onchange="FontChange()" class="select-btn" id="edit-font-size-btn" name="numbers">
+                            <option value="4">4</option>
+                            <option value="6">6</option>
+                            <option value="8">8</option>
+                            <option value="10">10</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                            <option value="32">32</option>
+                            <option value="33">33</option>
+                            <option value="34">34</option>
+                            <option value="35">35</option>
+                            <option value="36">36</option>
+                            <option value="37">37</option>
+                            <option value="38">38</option>
+                            <option value="39">39</option>
+                            <option value="40">40</option>
+                            <option value="42">42</option>
+                            <option value="44">44</option>
+                            <option value="46">46</option>
+                            <option value="48">48</option>
+                            <option value="50">50</option>
+                            <option value="52">52</option>
+                            <option value="54">54</option>
+                            <option value="56">56</option>
+                            <option value="58">58</option>
+                            <option value="60">60</option>
+                            <option value="62">62</option>
+                            <option value="64">64</option>
+                            <option value="66">66</option>
+                            <option value="68">68</option>
+                            <option value="70">70</option>
+                            <option value="72">72</option>
+                        </select>
+                        font-size
+                    </div>
+                    <div class="select-btn-div" onchange="ChangeFontColor()">
+                        <select class="select-btn" id="edit-font-color-btn">
+                            <option value="rgb(255, 255, 255)">Bisque</option>
+                            <option value="rgb(0, 0, 0)">Black</option>
+                            <option value="rgb(0, 0, 255)">Blue</option>
+                            <option value="rgb(138, 43, 226)">Blueviolet</option>
+                            <option value="rgb(165, 42, 42)">Brown</option>
+                            <option value="rgb(222, 184, 135)">Burlywood</option>
+                            <option value="rgb(95, 158, 160)">Cadetblue</option>
+                            <option value="rgb(127, 255, 0)">Chartreuse</option>
+                            <option value="rgb(210, 105, 30)">Chocolate</option>
+                            <option value="rgb(100, 149, 237)">Cornflowerblue</option>
+                            <option value="rgb(220, 20, 60)">Crimson</option>
+                        </select>
+                        Font Color
+                    </div>
+                    <div class="select-btn-div">
+                        <select onchange="ChangeFontFamily()" class="select-btn" id="edit-font-family-btn">
+                            <option
+                                style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"
+                                value="Gill Sans">Gill Sans
+                            </option>
+                            <option style="font-family: 'Courier New', Courier, monospace;" value="Courier New">Courier
+                                New
+                            </option>
+                            <option style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"
+                                value="Franklin Gothic Medium">Franklin Gothic
+                                Medium</option>
+                            <option
+                                style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"
+                                value="Lucida Sans">
+                                Lucida Sans</option>
+                            <option style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                                value="Segoe UI">
+                                Segoe UI
+                            </option>
+                            Segoe UI</option>
+                            <option style="font-family:'Times New Roman', Times, serif" value="Times New Roman">Times
+                                New
+                                Roman</option>
+                            <option
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"
+                                value="Trebuchet MS">
+                                Trebuchet MS</option>
+                            <option style="font-family: Arial, Helvetica, sans-serif;" value="Arial">
+                                Arial/Helvetica</option>
+                            <option style="font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;"
+                                value="Cambria, Cochin">Cambria</option>
+                            <option style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"
+                                value="Impact">Impact</option>
+                            <option style="font-family: Verdana, Geneva, Tahoma, sans-serif;" value="Verdana">Verdana
+                            </option>
+                            <option style="font-family: cursive;" value="cursive">Cursive</option>
+                            <option style="font-family: fantasy;" value="fantasy">Fantasy</option>
+                            <option style="font-family: monospace;" value="monospace">Monospace</option>
+                            <option style="font-family: sans-serif;" value="sans-serif">Sans-serif</option>
+                            <option style="font-family: serif;" value="serif">Serif</option>
+                        </select>
+                        Font family
+                    </div>
+                    <div class="select-btn-div">
+                        <select class="select-btn" onchange="ChangeFontWeight()" id="edit-font-weight-btn">
+                            <option value="100">100</option>
+                            <option value="200">200</option>
+                            <option value="300">300</option>
+                            <option value="400">400</option>
+                            <option value="500">500</option>
+                            <option value="600">600</option>
+                            <option value="700">700</option>
+                            <option value="800">800</option>
+                            <option value="900">900</option>
+                            <option value="bold">bold</option>
+                            <option value="bolder">bolder</option>
+                            <option value="lighter">lighter</option>
+                            <option value="normal">normal</option>
+                        </select>
+                        Font Weight
+                    </div>
+                </div>
+                <button onclick="DeleteText()" class="outline-btn" id="delete-text-btn"><i
+                        class="fa-solid fa-trash"></i></button>
             </div>
         </div>
     </div>
