@@ -16,6 +16,18 @@ body {
   overflow: hidden;
 }
 
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .carousel-container {
+  width: 100%;
+} */
+
 .swiper {
   width: 400px;
   height: 85%;
@@ -33,4 +45,48 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.toolbar-container {
+  width: 320px;
+  display: flex;
+  justify-content: center;
+}
+
+.outline-btn {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  padding: 18px 23px;
+  font-weight: 500;
+  font-size: 18px;
+  background: white;
+  border-radius: 4px;
+}
+
+.outline-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.outline-btn:active {
+  background: white;
+}
+
+.swiper-slide {
+  position: relative;
+  z-index: 99;
+}
+
+.slide-texts-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+}
+
+.slide-text {
+  border: 1px solid white;
+  padding: 5px;
+  cursor: pointer;
+  width: fit-content;
 }
