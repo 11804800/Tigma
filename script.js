@@ -42,6 +42,7 @@ const data = [
 
 let CurrentIndex = 0;
 let CurrentTextIndex = -1;
+let CurrentTextId = -1;
 
 const Add_New_Text_Btn = document.querySelector("#add-text-btn");
 const Swiper_Wrapper = document.querySelector(".swiper-wrapper");
@@ -84,18 +85,22 @@ function AttachEventListeners() {
   });
 }
 
-function SetCurrentTextIndex(index) {
-  CurrentTextIndex = index;
+function SetCurrentTextIndex() {
   const SLIDE = document.querySelectorAll(".slide-text");
-  SLIDE.forEach((item) => {
-    item.style.border = "none";
+  SLIDE.forEach((item, index) => {
+    item.addEventListener("click", (e) => {
+      CurrentTextIndex = index;
+      CurrentTextId = item.id;
+      SLIDE.forEach((item) => {
+        item.style.border = "none";
+      });
+      item.style.border = "1px solid white";
+      const Style = window.getComputedStyle(item);
+      Edit_Font_Color_Btn.value = `${Style.color}`;
+      Edit_Font_Size_Btn.value = `${Style.fontSize.replace("px", "")}`;
+      Edit_Font_Weight_Btn.value = `${Style.fontWeight}`;
+    });
   });
-  SLIDE[index].style.border = "1px solid white";
-  const Style = window.getComputedStyle(SLIDE[index]);
-  Edit_Font_Color_Btn.value = `${Style.color}`;
-  Edit_Font_Family_Btn.value = Style.fontFamily;
-  Edit_Font_Size_Btn.value = `${Style.fontSize.replace("px", "")}`;
-  Edit_Font_Weight_Btn.value = `${Style.fontWeight}`;
 }
 
 function RenderDataItem() {
@@ -107,9 +112,8 @@ function RenderDataItem() {
         ${item.texts
           .map(
             (elem, index) =>
-              `<div  class="slide-text"       
-      style=" font:${elem.font}; color:${elem.color}; font-weight: ${elem.fontWeight};font-family:${elem.fontFamily};"
-       onclick="SetCurrentTextIndex(${index})">${elem.text}</div>`
+              `<div id=${elem.id}  class="slide-text"       
+      style=" font-size:${elem.font}; color:${elem.color}; font-weight: ${elem.fontWeight};font-family:${elem.fontFamily};">${elem.text}</div>`
           )
           .join("")}
       </div>
@@ -117,6 +121,7 @@ function RenderDataItem() {
     Swiper_Wrapper.innerHTML += SlideElement;
   });
   AttachEventListeners();
+  SetCurrentTextIndex();
 }
 
 RenderDataItem();
@@ -134,11 +139,9 @@ Add_New_Text_Btn.addEventListener("click", () => {
 });
 
 const swiper = new Swiper(".swiper", {
-  loop: true,
   pagination: {
     el: ".swiper-pagination",
   },
-  simulateTouch: false,
   touchStartPreventDefault: false,
   navigation: {
     nextEl: ".swiper-button-next",
@@ -154,7 +157,7 @@ const swiper = new Swiper(".swiper", {
 function DeleteText() {
   if (CurrentTextIndex >= 0) {
     const filterText = data[CurrentIndex].texts.filter(
-      (_, index) => index != CurrentTextIndex
+      (item) => item.id != CurrentTextId
     );
     data[CurrentIndex].texts = filterText;
     RenderDataItem();
@@ -185,8 +188,11 @@ function FontChange() {
   if (CurrentTextIndex >= 0) {
     const slide_text = document.querySelectorAll(".slide-text");
     const value = document.querySelector("#edit-font-size-btn").value;
-    data[CurrentIndex].texts[CurrentTextIndex].font = value;
     slide_text[CurrentTextIndex].style.fontSize = `${value}px`;
+    const Index = data[CurrentIndex].texts.findIndex(
+      (item) => item.id == CurrentTextId
+    );
+    data[CurrentIndex].texts[Index].font = `${value}px`;
   }
 }
 
@@ -194,8 +200,11 @@ function ChangeFontWeight() {
   if (CurrentTextIndex >= 0) {
     const slide_text = document.querySelectorAll(".slide-text");
     const value = Edit_Font_Weight_Btn.value;
-    data[CurrentIndex].texts[CurrentTextIndex].fontWeight = value;
     slide_text[CurrentTextIndex].style.fontWeight = `${value}`;
+    const Index = data[CurrentIndex].texts.findIndex(
+      (item) => item.id == CurrentTextId
+    );
+    data[CurrentIndex].texts[Index].fontWeight = value;
   }
 }
 
@@ -203,8 +212,11 @@ function ChangeFontFamily() {
   if (CurrentTextIndex >= 0) {
     const slide_text = document.querySelectorAll(".slide-text");
     const value = Edit_Font_Family_Btn.value;
-    data[CurrentIndex].texts[CurrentTextIndex].fontFamily = value;
     slide_text[CurrentTextIndex].style.fontFamily = `${value}`;
+    const Index = data[CurrentIndex].texts.findIndex(
+      (item) => item.id == CurrentTextId
+    );
+    data[CurrentIndex].texts[Index].fontFamily = value;
   }
 }
 
@@ -212,7 +224,11 @@ function ChangeFontColor() {
   if (CurrentTextIndex >= 0) {
     const slide_text = document.querySelectorAll(".slide-text");
     const value = Edit_Font_Color_Btn.value;
-    data[CurrentIndex].texts[CurrentTextIndex].color = value;
     slide_text[CurrentTextIndex].style.color = `${value}`;
+    const Index = data[CurrentIndex].texts.findIndex(
+      (item) => item.id == CurrentTextId
+    );
+    data[CurrentIndex].texts[Index].color = `${value}`;
+    console.log(data[CurrentIndex].texts[Index]);
   }
 }
